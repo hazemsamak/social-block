@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  pihole-control:
+    build: .
+    ports:
+      - "5000:5000"
+    environment:
+      - PIHOLE_URL=${PIHOLE_URL}
+      - PIHOLE_PASSWORD=${PIHOLE_PASSWORD}
+      - DISCORD_WEBHOOK_URL=${DISCORD_WEBHOOK_URL}
+      - CLIENT_IP=${CLIENT_IP}
+    volumes:
+      - .:/app
+    restart: unless-stopped
