@@ -1,17 +1,18 @@
-
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PiHole Social Control</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
+
 <body>
     <div class="container">
         <h1>Social Control</h1>
         <p class="subtitle">Manage access to social media</p>
-        
+
         <div id="status-display" class="status-indicator status-blocked">
             Loading...
         </div>
@@ -20,7 +21,11 @@
             <span id="btn-text">Check Status</span>
             <div class="loader" id="btn-loader"></div>
         </button>
+
+        <a href="/logout"
+            style="display: block; margin-top: 2rem; color: #94a3b8; text-decoration: none; font-size: 0.8rem;">Logout</a>
     </div>
     <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
+
 </html>

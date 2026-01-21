@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - PiHole Social Control</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .input-group {
+            margin-bottom: 2rem;
+            text-align: left;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 1rem;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(0, 0, 0, 0.2);
+            color: white;
+            font-size: 1rem;
+            box-sizing: border-box;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .input-field:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+        }
+
+        .error-msg {
+            color: #ef4444;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Welcome</h1>
+        <p class="subtitle">Please login to continue</p>
+
+        <form method="POST" action="/login">
+            {% if error %}
+            <div class="error-msg">{{ error }}</div>
+            {% endif %}
+            <div class="input-group">
+                <input type="password" name="password" class="input-field" placeholder="Enter Password" required
+                    autofocus>
+            </div>
+            <button type="submit" class="toggle-btn">Login</button>
+        </form>
+    </div>
+</body>
+
+</html>

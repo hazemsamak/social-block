@@ -32,6 +32,25 @@ class PiHoleClient:
             print(f"Error logging in: {e}")
             return False
 
+    def logout(self):
+        """Terminates the Pi-hole session."""
+        if not self.sid:
+            return
+            
+        url = f"{self.base_url}/api/auth"
+        try:
+            # User requested: /api/auth?sid=<sid>
+            # We send DELETE to this URL.
+            print(f"DEBUG: Logging out from PiHole with SID: {self.sid[:5]}...")
+            response = self.session.delete(url, params={"sid": self.sid})
+            print(f"DEBUG: Logout Response: {response.status_code}")
+        except Exception as e:
+            print(f"Error logging out from PiHole: {e}")
+        finally:
+            self.sid = None
+            if "X-FTL-SID" in self.session.headers:
+                del self.session.headers["X-FTL-SID"]
+
     def _ensure_auth(self):
         if not self.sid:
             return self.login()
