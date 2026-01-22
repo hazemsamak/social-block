@@ -18,7 +18,7 @@ COPY . .
 EXPOSE 5000
 
 # Define environment variable
-ENV FLASK_APP=app.py
+ENV FLASK_APP=run.py
 
-# Run app.py when the container launches
-CMD ["python", "app.py"]
+# Run run.py when the container launches
+CMD ["python", "run.py"]

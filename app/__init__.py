@@ -3,8 +3,8 @@ from datetime import timedelta
 from flask import Flask, render_template, jsonify, request, session, redirect, url_for
 import os
 from dotenv import load_dotenv
-from pihole_client import PiHoleClient
-from discord_notifier import send_notification
+from .services.pihole_client import PiHoleClient
+from .services.discord_notifier import send_notification
 from functools import wraps
 
 # Load environment variables
@@ -65,14 +65,6 @@ def get_status():
 def toggle_status():
     current_status = pihole.get_status()
     
-    # Logic: 
-    # If blocked, we want to unblock (Disable Group, Remove Client)
-    # If unblocked, we want to block (Enable Group, Add Client)
-    
-    # However, user request says:
-    # "For Unblock: Delete client and disable Group"
-    # "For Block: Enable Group and add client"
-    
     target_action = request.json.get('action') # 'block' or 'unblock'
     
     success = False
@@ -98,6 +90,3 @@ def toggle_status():
         return jsonify({"success": True, "status": new_status})
     else:
         return jsonify({"success": False, "message": "Failed to toggle status"}), 500
-
-if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5000)
