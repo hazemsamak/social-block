@@ -1,4 +1,5 @@
 
+from datetime import timedelta
 from flask import Flask, render_template, jsonify, request, session, redirect, url_for
 import os
 from dotenv import load_dotenv
@@ -12,6 +13,7 @@ load_dotenv()
 app = Flask(__name__)
 # Set secret key for sessions
 app.secret_key = os.getenv('FLASK_SECRET_KEY', 'default_secret_key') 
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=31) 
 
 pihole = PiHoleClient()
 
@@ -31,6 +33,7 @@ def login():
     error = None
     if request.method == 'POST':
         if request.form['password'] == APP_PASSWORD:
+            session.permanent = True
             session['logged_in'] = True
             return redirect(url_for('index'))
         else:
