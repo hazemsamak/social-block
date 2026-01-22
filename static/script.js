@@ -14,12 +14,12 @@ async function updateStatus() {
         if (data.status === 'Blocked') {
             statusDisplay.textContent = 'BLOCKED';
             statusDisplay.classList.add('status-blocked');
-            btnText.textContent = 'Unblock Access';
+            btnText.innerHTML = '<i class="fas fa-unlock"></i> Unblock Access';
             mainBtn.setAttribute('data-action', 'unblock');
         } else {
             statusDisplay.textContent = 'UNBLOCKED';
             statusDisplay.classList.add('status-unblocked');
-            btnText.textContent = 'Block Access';
+            btnText.innerHTML = '<i class="fas fa-lock"></i> Block Access';
             mainBtn.setAttribute('data-action', 'block');
         }
     } catch (error) {
