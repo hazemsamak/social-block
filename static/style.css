@@ -1,4 +1,3 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&display=swap');
 
 :root {
@@ -14,17 +13,22 @@
 body {
     font-family: 'Outfit', sans-serif;
     background-color: var(--bg-color);
+    background-image: linear-gradient(rgba(15, 23, 42, 0.85), rgba(15, 23, 42, 0.85)), url('bg.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     color: var(--text-color);
     display: flex;
-    justify_content: center;
+    justify-content: center;
     align-items: center;
-    min-height: 100vh;
+    min-height: 100dvh;
     margin: 0;
     overflow: hidden;
 }
 
 .container {
     background: rgba(30, 41, 59, 0.7);
+    -webkit-backdrop-filter: blur(20px);
     backdrop-filter: blur(20px);
     border-radius: 24px;
     padding: 3rem;
@@ -100,16 +104,16 @@ p.subtitle {
     border: 1px solid #475569;
     color: #cbd5e1;
     margin-top: 1rem;
-    background: rgba(255,255,255,0.05);
+    background: rgba(255, 255, 255, 0.05);
 }
 
 .toggle-btn.secondary:hover {
     border-color: #64748b;
-    background: rgba(255,255,255,0.1);
+    background: rgba(255, 255, 255, 0.1);
 }
 
 .loader {
-    border: 3px solid rgba(255,255,255,0.1);
+    border: 3px solid rgba(255, 255, 255, 0.1);
     border-left-color: #fff;
     border-radius: 50%;
     width: 20px;
@@ -120,6 +124,61 @@ p.subtitle {
 }
 
 @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Login Page Specifics */
+.login-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4rem;
+    padding: 2rem;
+    max-width: 1200px;
+    width: 100%;
+}
+
+.illustration-side {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    max-width: 600px;
+}
+
+.illustration-side img {
+    max-width: 100%;
+    height: auto;
+    filter: drop-shadow(0 0 30px rgba(59, 130, 246, 0.4));
+    animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-20px);
+    }
+
+    100% {
+        transform: translateY(0px);
+    }
+}
+
+@media (max-width: 900px) {
+    .login-wrapper {
+        flex-direction: column;
+        gap: 2rem;
+    }
+
+    .illustration-side {
+        max-width: 300px;
+    }
 }
