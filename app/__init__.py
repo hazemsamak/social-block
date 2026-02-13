@@ -23,6 +23,15 @@ pihole = PiHoleClient()
 CLIENT_IP = os.getenv('CLIENT_IP', '192.168.1.0/24')
 APP_PASSWORD = os.getenv('APP_PASSWORD', 'admin')
 
+# Attach dependencies to app config for Blueprint access
+app.config['PIHOLE_CLIENT'] = pihole
+app.config['SOCKETIO'] = socketio
+app.config['CLIENT_IP'] = CLIENT_IP
+
+# Register Blueprints
+from .api import api_v1
+app.register_blueprint(api_v1, url_prefix='/api/v1')
+
 def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
@@ -56,41 +65,3 @@ def logout():
 @login_required
 def index():
     return render_template('index.html')
-
-@app.route('/api/status', methods=['GET'])
-@login_required
-def get_status():
-    status = pihole.get_status()
-    return jsonify({"status": status})
-
-@app.route('/api/toggle', methods=['POST'])
-@login_required
-def toggle_status():
-    current_status = pihole.get_status()
-    
-    target_action = request.json.get('action') # 'block' or 'unblock'
-    
-    success = False
-    new_status = "Unknown"
-    
-    if target_action == 'block':
-        # Enable Group
-        if pihole.toggle_group("Social", enable=True):
-            # Add Client
-            pihole.add_client_to_group(CLIENT_IP, "Social")
-            success = True
-            new_status = "Blocked"
-    elif target_action == 'unblock':
-        # Disable Group
-        if pihole.toggle_group("Social", enable=False):
-            # Remove Client
-            pihole.remove_client(CLIENT_IP)
-            success = True
-            new_status = "Unblocked"
-            
-    if success:
-        send_notification(new_status)
-        socketio.emit('status_change', {'status': new_status}, namespace='/')
-        return jsonify({"success": True, "status": new_status})
-    else:
-        return jsonify({"success": False, "message": "Failed to toggle status"}), 500

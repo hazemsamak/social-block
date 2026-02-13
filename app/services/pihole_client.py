@@ -220,3 +220,25 @@ class PiHoleClient:
             
         return "Unknown"
 
+    def set_social_block(self, client_ip, enabled=True):
+        """High-level method to block/unblock a client from social media."""
+        if not self._ensure_auth():
+            return "Error"
+
+        group_name = "Social"
+        
+        if enabled:
+            # Step 1: Enable the "Social" group
+            if self.toggle_group(group_name, enable=True):
+                # Step 2: Add the client to this group
+                if self.add_client_to_group(client_ip, group_name):
+                    return "Blocked"
+        else:
+            # Step 1: Disable the "Social" group
+            if self.toggle_group(group_name, enable=False):
+                # Step 2: Remove the client
+                if self.remove_client(client_ip):
+                    return "Unblocked"
+        
+        return "Error"
+
