@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 from .services.pihole_client import PiHoleClient
 from .services.discord_notifier import send_notification
 from functools import wraps
+from flask_socketio import SocketIO, emit
 
 # Load environment variables
 load_dotenv()
@@ -14,6 +15,8 @@ app = Flask(__name__)
 # Set secret key for sessions
 app.secret_key = os.getenv('FLASK_SECRET_KEY', 'default_secret_key') 
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=31) 
+
+socketio = SocketIO(app, cors_allowed_origins="*")
 
 pihole = PiHoleClient()
 
@@ -87,6 +90,7 @@ def toggle_status():
             
     if success:
         send_notification(new_status)
+        socketio.emit('status_change', {'status': new_status}, namespace='/')
         return jsonify({"success": True, "status": new_status})
     else:
         return jsonify({"success": False, "message": "Failed to toggle status"}), 500

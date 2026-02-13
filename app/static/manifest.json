@@ -1,0 +1,16 @@
+{
+    "name": "PiHole Social Control",
+    "short_name": "Social Control",
+    "description": "Manage access to social media via Pi-hole",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#0f172a",
+    "theme_color": "#0f172a",
+    "icons": [
+        {
+            "src": "favicon.png",
+            "sizes": "192x192 512x512",
+            "type": "image/png"
+        }
+    ]
+}
