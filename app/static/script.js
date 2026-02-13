@@ -39,7 +39,7 @@ function applyStatusUI(status) {
 
 async function updateStatus() {
     try {
-        const response = await fetch('/api/status');
+        const response = await fetch('/api/v1/social/status');
         const data = await response.json();
         applyStatusUI(data.status);
     } catch (error) {
@@ -62,7 +62,7 @@ async function toggleStatus() {
     mainBtn.disabled = true;
 
     try {
-        const response = await fetch('/api/toggle', {
+        const response = await fetch('/api/v1/social/toggle', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
