@@ -1,16 +1,19 @@
 from flask import Blueprint, jsonify, request, current_app
 from .services.discord_notifier import send_notification
 import os
+from .auth import login_required
 
 api_v1 = Blueprint('api_v1', __name__)
 
 @api_v1.route('/social/status', methods=['GET'])
+@login_required
 def get_social_status():
     pihole = current_app.config['PIHOLE_CLIENT']
     status = pihole.get_status()
     return jsonify({"status": status})
 
 @api_v1.route('/social/toggle', methods=['POST'])
+@login_required
 def toggle_social_status():
     pihole = current_app.config['PIHOLE_CLIENT']
     socketio = current_app.config['SOCKETIO']

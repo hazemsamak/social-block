@@ -4,15 +4,30 @@ document.addEventListener('DOMContentLoaded', () => {
     updateStatus();
 
     // Initialize Socket.io
-    const socket = io();
+    const socket = io({
+        reconnection: true,
+        reconnectionAttempts: Infinity,
+        reconnectionDelay: 1000,
+        reconnectionDelayMax: 5000,
+        timeout: 20000,
+    });
 
     socket.on('connect', () => {
         console.log('Connected to server via WebSocket');
+        updateStatus(); // Refresh status on every connection/reconnection
     });
 
     socket.on('status_change', (data) => {
         console.log('Received status update:', data);
         applyStatusUI(data.status);
+    });
+
+    // Handle visibility changes (e.g., coming back to the tab on mobile)
+    document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible') {
+            console.log('Tab became visible - refreshing status');
+            updateStatus();
+        }
     });
 });
 
@@ -40,6 +55,12 @@ function applyStatusUI(status) {
 async function updateStatus() {
     try {
         const response = await fetch('/api/v1/social/status');
+
+        if (response.status === 401) {
+            window.location.href = '/login';
+            return;
+        }
+
         const data = await response.json();
         applyStatusUI(data.status);
     } catch (error) {
@@ -69,6 +90,11 @@ async function toggleStatus() {
             },
             body: JSON.stringify({ action: action }),
         });
+
+        if (response.status === 401) {
+            window.location.href = '/login';
+            return;
+        }
 
         const data = await response.json();
 

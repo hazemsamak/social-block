@@ -28,17 +28,11 @@ app.config['PIHOLE_CLIENT'] = pihole
 app.config['SOCKETIO'] = socketio
 app.config['CLIENT_IP'] = CLIENT_IP
 
+from .auth import login_required
+
 # Register Blueprints
 from .api import api_v1
 app.register_blueprint(api_v1, url_prefix='/api/v1')
-
-def login_required(f):
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        if not session.get('logged_in'):
-            return redirect(url_for('login'))
-        return f(*args, **kwargs)
-    return decorated_function
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
